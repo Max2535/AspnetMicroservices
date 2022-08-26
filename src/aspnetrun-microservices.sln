@@ -3,9 +3,40 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{2B203051-B7B8-40ED-AF6A-2BFA68300E83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{F23549DA-4E47-4BDB-9C91-E88DE91B7EF3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.API", "Catalog.API\Catalog.API.csproj", "{A6D59295-EAB3-4167-BFDC-1E0859C10BD2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ABC2807A-5F4D-4180-8719-13A298F4AA33}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.override.yml = docker-compose.override.yml
+	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F0FA5570-3420-423F-804A-D6D06709C46C}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6D59295-EAB3-4167-BFDC-1E0859C10BD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6D59295-EAB3-4167-BFDC-1E0859C10BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6D59295-EAB3-4167-BFDC-1E0859C10BD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6D59295-EAB3-4167-BFDC-1E0859C10BD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0FA5570-3420-423F-804A-D6D06709C46C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0FA5570-3420-423F-804A-D6D06709C46C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0FA5570-3420-423F-804A-D6D06709C46C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0FA5570-3420-423F-804A-D6D06709C46C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F23549DA-4E47-4BDB-9C91-E88DE91B7EF3} = {2B203051-B7B8-40ED-AF6A-2BFA68300E83}
+		{A6D59295-EAB3-4167-BFDC-1E0859C10BD2} = {F23549DA-4E47-4BDB-9C91-E88DE91B7EF3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB12C14-018C-458C-B251-DF1F7FE9D483}
