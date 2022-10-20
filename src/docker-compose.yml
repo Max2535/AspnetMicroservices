@@ -70,11 +70,18 @@ services:
       context: .
       dockerfile: AspnetRunBasics/AspnetRunBasics/Dockerfile
 
+  webstatus:
+    image: ${DOCKER_REGISTRY-}webstatus
+    build:
+      context: .
+      dockerfile: WebStatus/WebStatus/Dockerfile
+
 volumes:
   mongo_data: 
   portainer_data:
   postgres_data:
   pgadmin_data:
+
 
 
 

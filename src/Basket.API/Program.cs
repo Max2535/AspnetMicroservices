@@ -1,7 +1,10 @@
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Discount.Grpc.Protos;
+using HealthChecks.UI.Client;
 using MassTransit;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +25,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
     (o=>o.Address = new Uri(configuration["GrpcSettings:DiscountUrl"]));
 builder.Services.AddScoped<DiscountGrpcService>();
-
+builder.Services.AddHealthChecks()
+                    .AddRedis(configuration.GetValue<string>("CacheSettings:ConnectionString"), "Redis Health", HealthStatus.Degraded);
 // MassTransit-RabbitMQ Configuration
 builder.Services.AddMassTransit(config =>
 {
@@ -58,6 +62,11 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
+    endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+    {
+        Predicate = _ => true,
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 });
 
 app.Run();

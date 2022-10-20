@@ -1,5 +1,7 @@
 using EventBus.Messages.Common;
+using HealthChecks.UI.Client;
 using MassTransit;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Ordering.API.EventBusConsumer;
@@ -25,7 +27,7 @@ builder.Services.AddMassTransit(config =>
     config.UsingRabbitMq((ctx, cfg) =>
     {
         cfg.Host(configuration.GetValue<string>("EventBusSettings:HostAddress"));
-
+        cfg.UseHealthCheck(ctx);
         cfg.ReceiveEndpoint(EventBusConstants.BasketCheckoutQueue, c =>
         {
             c.ConfigureConsumer<BasketCheckoutConsumer>(ctx);
@@ -40,6 +42,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHealthChecks()
+           .AddDbContextCheck<OrderContext>();
 
 var app = builder.Build();
 app.MigrateDatabase<OrderContext>((context, services) =>
@@ -53,11 +57,19 @@ app.MigrateDatabase<OrderContext>((context, services) =>
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ordering.API v1"));
 }
-
+app.UseRouting();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+    {
+        Predicate = _ => true,
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
+});
 
 app.Run();

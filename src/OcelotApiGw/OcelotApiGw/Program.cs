@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.WebHost
     .ConfigureAppConfiguration((hostingContext, config) =>
     {
-        config.AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json",true,true);
+        config.AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true);
     })
     .ConfigureLogging((hostingContext, logging) =>
     {
@@ -23,6 +23,14 @@ builder.Services.AddOcelot()
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGet("/", async context =>
+    {
+        await context.Response.WriteAsync("Hello World!");
+    });
+});
 await app.UseOcelot();
 app.Run();
